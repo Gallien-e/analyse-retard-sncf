@@ -1,0 +1,1 @@
+Ce dossier contient les rapports Power BI générés à partir de la base de données SQL. Ils permettent de visualiser et d'analyser les retards des trains de manière interactive et intuitive.

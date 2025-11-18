@@ -1,0 +1,1 @@
+Ce dossier contient l'ensemble des notebooks Jupyter utilisés pour le nettoyage, l'analyse exploratoire, la modélisation et la visualisation des données dans ce projet.

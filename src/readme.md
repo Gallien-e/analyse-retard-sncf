@@ -1,0 +1,1 @@
+Ce fichier contient les scripts python finaux, utilisés pour exécuter les différentes étapes du projet, depuis le traitement des données jusqu'à la génération des modèles prédictifs.

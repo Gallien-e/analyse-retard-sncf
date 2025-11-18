@@ -1,0 +1,1 @@
+Ce fichier contient la base de données SQL utilisée dans ce projet, générée à partir des données parquet. Elle sert un double objectif, à la fois pédagogique (manipuler des données avec SQL) et pratique (garantir une gestion efficace et structurée des données). Elle sera utilisée pour la génération des rapports Power BI.

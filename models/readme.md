@@ -1,0 +1,1 @@
+Ce dossier contient les modèles prédictifs de ce projet, développés pour analyser et prévoir les retards des trains à partir des données au format Parquet.
