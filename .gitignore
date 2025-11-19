@@ -10,3 +10,6 @@ venv/
 
 # Raw data
 data/1-raw/*.csv
+
+# Temporary excel files
+~$*.xlsx
