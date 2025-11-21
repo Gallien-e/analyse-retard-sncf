@@ -1,1 +1,0 @@
-Ce dossier contient les fichiers de données au format Parquet utilisés dans ce projet, extraits à partir des fichiers csv d'origine pour une meilleure performance et une gestion plus efficace des données volumineuses.
