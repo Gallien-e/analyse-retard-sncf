@@ -8,8 +8,12 @@ __pycache__/
 .venv
 venv/
 
-# Raw data
-data/1-raw/*.csv
+# Large raw files
+data/1-raw/slo_annuel*.csv
+data/1-raw/ic_annuel*.csv
+data/1-raw/idfm_annuel*.csv
+data/1-raw/ter_annuel*.csv
+data/1-raw/tet_annuel*.csv
 
 # Temporary excel files
 ~$*.xlsx
