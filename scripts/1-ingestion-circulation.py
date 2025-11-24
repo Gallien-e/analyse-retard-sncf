@@ -1,6 +1,7 @@
 import os
 import tqdm
 import logging
+from rich.logging import RichHandler
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -20,10 +21,12 @@ SOURCE_FILE = BASE_DIR / f"data/1-raw/circulations/{PARTITION}_annuel_{ANNEE}.cs
 DEST_FILE = BASE_DIR / f"data/2-clean/circulations/{PARTITION}_{ANNEE}.parquet"
 
 # configuration du logging
-logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(level=logging.DEBUG, 
+                    format = "%(message)s",
+                    handlers=[RichHandler()])
 
 
-######### LECTURE ET NETTOYAGE DES DONNÉES BRUTES #########
+######### LECTURE DES DONNÉES BRUTES #########
 
 # lecture du fichier source
 logging.info(f"Lecture du fichier {SOURCE_FILE}.")
@@ -69,6 +72,8 @@ except Exception as e:
 
 logging.info(f"Fichier lu : {df.shape[0]:_} lignes, {df.shape[1]:_} colonnes.")
 
+##### NETTOYAGE DES DONNÉES BRUTES ET PIVOT #####
+
 # nombre de trajets initial
 nb_trajet_init = df['id_circ'].nunique()
 
@@ -90,9 +95,6 @@ logging.info("Suppression des trajets en doublon.")
 df = df.drop_duplicates(subset=['id_circ', 'date_circ', 'num_marche', 'code_ci_origine', 'lib_ci_origine', 
                                 'code_ci_destination', 'lib_ci_destination', 'lib_ui', 'id_engin', 'type_arret'],
                                 keep='first') # on garde seulement la première occurrence de chaque doublon
-
-
-######### PIVOT #########
 
 # pivot (pour avoir une seule ligne par trajet)
 logging.info("Pivot du jeu de données (pour avoir une seule ligne par trajet).")
@@ -181,3 +183,12 @@ logging.info(f"Ingestion terminée : {df.shape[0]:_} lignes, {df.shape[1]:_} col
 logging.info(f"Sauvegarde du fichier nettoyé dans {DEST_FILE}.")
 df.to_parquet(DEST_FILE, index=False)
 logging.info(f"Fichier sauvegardé. Taille du fichier : {os.path.getsize(DEST_FILE) / 1_000_000:.2f} Mo.")
+
+
+def main():
+    # df = lirecsv(...)
+    # df = nettoyer_et_pivoter(df)
+    # df = calculer_colonnes_derivees(df)
+    # sauvegarder_parquet(df, DEST_FILE)
+    print(df.head())
+    pass
