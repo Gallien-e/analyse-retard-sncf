@@ -1,4 +1,6 @@
 import os
+import tqdm
+import logging
 from pathlib import Path
 import numpy as np
 import pandas as pd
@@ -9,62 +11,73 @@ import pandas as pd
 # - ouput : fichier .parquet nettoyé
 
 # paramètres 
-annee = 2022
-partition = "slo"
+ANNEE = 2022
+PARTITION = "slo"
 
 # chemins des fichiers
 BASE_DIR = Path(__file__).resolve().parent.parent
-source_file = BASE_DIR / f"data/1-raw/circulations/{partition}_annuel_{annee}.csv"
-dest_file = BASE_DIR / f"data/2-clean/circulations/{partition}_{annee}.parquet"
+SOURCE_FILE = BASE_DIR / f"data/1-raw/circulations/{PARTITION}_annuel_{ANNEE}.csv"
+DEST_FILE = BASE_DIR / f"data/2-clean/circulations/{PARTITION}_{ANNEE}.parquet"
+
+# configuration du logging
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 ######### LECTURE ET NETTOYAGE DES DONNÉES BRUTES #########
 
 # lecture du fichier source
-print(f"Lecture du fichier {source_file}.")
-df = pd.read_csv(
-    source_file,
-    usecols = ['id_circ', 'num_marche', 'code_ci_origine', 'lib_ci_origine', 'code_ci_destination', 
-               'lib_ci_destination', 'ui', 'lib_ui', 'tct', 'lib_tct', 'code_ci_jalon', 'code_ch_jalon', 
-               'lib_ci_jalon', 'distance_cumul', 'type_horaire', 'id_engin', 'mode_traction', 'date_circ', 
-               'dh_the_jalon', 'dh_obs_jalon', 'dh_est_jalon'], 
-    dtype={
-        "id_circ": "string",
-        "num_marche": "string",
-        "code_ci_origine": "string",
-        "lib_ci_origine": "string",
-        "code_ci_destination": "string",
-        "lib_ci_destination": "string",
-        "ui": "string",
-        "lib_ui": "string",
-        "tct": "string",
-        "lib_tct": "string",
-        "code_ci_jalon": "string",
-        "code_ch_jalon": "string",
-        "lib_ci_jalon": "string",
-        "distance_cumul" : "Int64",
-        "type_horaire": "string",
-        "id_engin": "string",
-        "mode_traction": "string"
-    },
-    parse_dates=[
-        "date_circ",
-        "dh_the_jalon",
-        "dh_obs_jalon",
-        "dh_est_jalon"
-        ]
-)
-print(f"Fichier lu : {df.shape[0]:_} lignes, {df.shape[1]:_} colonnes.")
+logging.info(f"Lecture du fichier {SOURCE_FILE}.")
+try :
+    df = pd.read_csv(
+        SOURCE_FILE,
+        usecols = ['id_circ', 'num_marche', 'code_ci_origine', 'lib_ci_origine', 'code_ci_destination', 
+                'lib_ci_destination', 'ui', 'lib_ui', 'tct', 'lib_tct', 'code_ci_jalon', 'code_ch_jalon', 
+                'lib_ci_jalon', 'distance_cumul', 'type_horaire', 'id_engin', 'mode_traction', 'date_circ', 
+                'dh_the_jalon', 'dh_obs_jalon', 'dh_est_jalon'], 
+        dtype={
+            "id_circ": "string",
+            "num_marche": "string",
+            "code_ci_origine": "string",
+            "lib_ci_origine": "string",
+            "code_ci_destination": "string",
+            "lib_ci_destination": "string",
+            "ui": "string",
+            "lib_ui": "string",
+            "tct": "string",
+            "lib_tct": "string",
+            "code_ci_jalon": "string",
+            "code_ch_jalon": "string",
+            "lib_ci_jalon": "string",
+            "distance_cumul" : "Int64",
+            "type_horaire": "string",
+            "id_engin": "string",
+            "mode_traction": "string"
+        },
+        parse_dates=[
+            "date_circ",
+            "dh_the_jalon",
+            "dh_obs_jalon",
+            "dh_est_jalon"
+            ]
+    )
+except FileNotFoundError:
+    logging.error(f"Fichier non trouvé : {SOURCE_FILE}.")
+    raise
+except Exception as e:
+    logging.error(f"Erreur lors de la lecture du fichier : {e}.")
+    raise
+
+logging.info(f"Fichier lu : {df.shape[0]:_} lignes, {df.shape[1]:_} colonnes.")
 
 # nombre de trajets initial
 nb_trajet_init = df['id_circ'].nunique()
 
 # suppression des lignes avec des valeurs manquantes
-print("Suppression des lignes avec des valeurs manquantes.")
+logging.info("Suppression des lignes avec des valeurs manquantes.")
 df = df.dropna()
 
 # on garde uniquement les jalons de départ et d'arrivée
-print("Filtrage des jalons de départ et d'arrivée.")
+logging.info("Filtrage des jalons de départ et d'arrivée.")
 df['is_depart'] = (df['code_ci_jalon'] == df['code_ci_origine']) & (df['type_horaire'].isin(['D', 'P', 'I']))
 df['is_arrivee'] = (df['code_ci_jalon'] == df['code_ci_destination']) & (df['type_horaire'].isin(['A', 'P', 'I']))
 df = df[df['is_depart'] | df['is_arrivee']]
@@ -73,7 +86,7 @@ df['type_arret'] = np.where(df['is_depart'], 'depart', 'arrivee') # on peut le f
 df = df.drop(columns=['is_depart', 'is_arrivee'])
 
 # sppression des trajets en doublon
-print("Suppression des trajets en doublon.")
+logging.info("Suppression des trajets en doublon.")
 df = df.drop_duplicates(subset=['id_circ', 'date_circ', 'num_marche', 'code_ci_origine', 'lib_ci_origine', 
                                 'code_ci_destination', 'lib_ci_destination', 'lib_ui', 'id_engin', 'type_arret'],
                                 keep='first') # on garde seulement la première occurrence de chaque doublon
@@ -82,7 +95,7 @@ df = df.drop_duplicates(subset=['id_circ', 'date_circ', 'num_marche', 'code_ci_o
 ######### PIVOT #########
 
 # pivot (pour avoir une seule ligne par trajet)
-print("Pivot du jeu de données (pour avoir une seule ligne par trajet).")
+logging.info("Pivot du jeu de données (pour avoir une seule ligne par trajet).")
 df = df.pivot_table(
     index = ['id_circ', 'date_circ', 'num_marche', 'code_ci_origine', 'lib_ci_origine', 
             'code_ci_destination', 'lib_ci_destination', 'lib_ui'],
@@ -117,17 +130,17 @@ df = df[[
 ]]
 
 # suppression des trajets incomplets (sans départ ou arrivée)
-print("Suppression des trajets incomplets (sans départ ou arrivée).")
+logging.info("Suppression des trajets incomplets (sans départ ou arrivée).")
 df = df.dropna()
 
 # taux de perte après nettoyage
 nb_trajet_final = df['id_circ'].nunique()
-print(f"Après pivot et nettoyage, il reste {nb_trajet_final:_} trajets sur {nb_trajet_init:_}, soit {(nb_trajet_init - nb_trajet_final) / nb_trajet_init:.2%} de pertes.")
+logging.info(f"Après pivot et nettoyage, il reste {nb_trajet_final:_} trajets sur {nb_trajet_init:_}, soit {(nb_trajet_init - nb_trajet_final) / nb_trajet_init:.2%} de pertes.")
 
 
 ######### CALCUL DES COLONNES DÉRIVÉES #########
 
-print("Calcul des colonnes dérivées (retards, durées, mois, jour de la semaine, etc.).")
+logging.info("Calcul des colonnes dérivées (retards, durées, mois, jour de la semaine, etc.).")
 
 # Retard au départ et à l'arrivée (en minutes)
 df['ret_depart'] = ((df['depart_observe'] - df['depart_theorique']).dt.total_seconds()) / 60
@@ -161,10 +174,10 @@ df['jour_semaine'] = df['date_circ'].dt.dayofweek
 df['heure_depart'] = df['depart_observe'].dt.hour
 df['heure_arrivee'] = df['arrivee_observe'].dt.hour
 
-print(f"Nettoyage terminé : {df.shape[0]:_} lignes, {df.shape[1]:_} colonnes.")
+logging.info(f"Ingestion terminée : {df.shape[0]:_} lignes, {df.shape[1]:_} colonnes.")
 
 
 ######### SAUVEGARDE DU FICHIER #########
-print(f"Sauvegarde du fichier nettoyé dans {dest_file}.")
-df.to_parquet(dest_file, index=False)
-print(f"Fichier sauvegardé. Taille du fichier : {os.path.getsize(dest_file) / 1_000_000:.2f} Mo.")
+logging.info(f"Sauvegarde du fichier nettoyé dans {DEST_FILE}.")
+df.to_parquet(DEST_FILE, index=False)
+logging.info(f"Fichier sauvegardé. Taille du fichier : {os.path.getsize(DEST_FILE) / 1_000_000:.2f} Mo.")
