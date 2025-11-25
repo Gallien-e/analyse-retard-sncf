@@ -34,8 +34,8 @@ def lire_csv(chemin_fichier: Path) -> pd.DataFrame:
         df = pd.read_csv(
             chemin_fichier,
             usecols = ['id_circ', 'num_marche', 'code_ci_origine', 'lib_ci_origine', 'code_ci_destination', 
-                    'lib_ci_destination', 'ui', 'lib_ui', 'tct', 'lib_tct', 'code_ci_jalon', 'code_ch_jalon', 
-                    'lib_ci_jalon', 'distance_cumul', 'type_horaire', 'id_engin', 'mode_traction', 'date_circ', 
+                    'lib_ci_destination', 'ui', 'lib_ui', 'tct', 'lib_tct', 'code_ci_jalon', 
+                    'distance_cumul', 'type_horaire', 'id_engin', 'mode_traction', 'date_circ', 
                     'dh_the_jalon', 'dh_obs_jalon', 'dh_est_jalon'], 
             dtype={
                 "id_circ": "string",
@@ -49,8 +49,6 @@ def lire_csv(chemin_fichier: Path) -> pd.DataFrame:
                 "tct": "string",
                 "lib_tct": "string",
                 "code_ci_jalon": "string",
-                "code_ch_jalon": "string",
-                "lib_ci_jalon": "string",
                 "distance_cumul" : "Float64",
                 "type_horaire": "string",
                 "id_engin": "string",
@@ -201,8 +199,8 @@ def sauvegarder_parquet(df: pd.DataFrame, chemin_fichier: Path) -> None:
 
 
 def main():
-    for annee in range(2018, 2025):
-        print("\n\n")
+    for annee in range(2019, 2025):
+        print("\n")
         SOURCE_FILE = BASE_DIR / f"data/1-raw/circulations/{PARTITION}_annuel_{annee}.csv"
         DEST_FILE = BASE_DIR / f"data/2-clean/circulations/{PARTITION}_{annee}.parquet"
         df = lire_csv(SOURCE_FILE)
