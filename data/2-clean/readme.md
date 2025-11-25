@@ -1,1 +1,5 @@
-Ce dossier contient les fichiers de données au format Parquet utilisés dans ce projet, extraits à partir des fichiers csv d'origine pour une meilleure performance et une gestion plus efficace des données volumineuses.
+Ce dossier contient l'ensemble des données après nettoyage et transformation. 
+
+L'organisation est la même que pour les données brutes.
+
+Le format Parquet a été privilégié pour son efficacité de stockage (format colonnes compressé) et sa rapidité de lecture, nettement supérieure à celle du format CSV.
