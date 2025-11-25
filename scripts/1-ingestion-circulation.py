@@ -26,7 +26,6 @@ logging.basicConfig(level=logging.DEBUG,
                     handlers=[RichHandler()])
 
 
-
 def lire_csv(chemin_fichier: Path) -> pd.DataFrame:
     """Lit le fichier CSV source et retourne un DataFrame pandas."""
 
@@ -52,7 +51,7 @@ def lire_csv(chemin_fichier: Path) -> pd.DataFrame:
                 "code_ci_jalon": "string",
                 "code_ch_jalon": "string",
                 "lib_ci_jalon": "string",
-                "distance_cumul" : "Int64",
+                "distance_cumul" : "Float64",
                 "type_horaire": "string",
                 "id_engin": "string",
                 "mode_traction": "string"
@@ -70,10 +69,9 @@ def lire_csv(chemin_fichier: Path) -> pd.DataFrame:
     except Exception as e:
         logging.error(f"Erreur lors de la lecture du fichier : {e}.")
         raise
-    logging.info(f"Fichier lu : {df.shape[0]:_} lignes, {df.shape[1]:_} colonnes.")
+    logging.info(f"Fichier lu : {df.shape[0]} lignes, {df.shape[1]} colonnes.")
 
     return df
-
 
 
 def nettoyer_et_pivoter(df: pd.DataFrame) -> pd.DataFrame:
@@ -83,6 +81,10 @@ def nettoyer_et_pivoter(df: pd.DataFrame) -> pd.DataFrame:
 
     # nombre de trajets initial
     nb_trajet_init = df['id_circ'].nunique()
+
+    # conversion de distance_cumul en Int64 (en enlevant les chiffres après la virgule)
+    logging.debug("Conversion de distance_cumul en Int64.")
+    df['distance_cumul'] = df['distance_cumul'].astype('Int64')
 
     # suppression des lignes avec des valeurs manquantes
     logging.debug("Suppression des lignes avec des valeurs manquantes.")
@@ -199,11 +201,14 @@ def sauvegarder_parquet(df: pd.DataFrame, chemin_fichier: Path) -> None:
 
 
 def main():
-    df = lire_csv(SOURCE_FILE)
-    df = nettoyer_et_pivoter(df)
-    df = calculer_colonnes_derivees(df)
-    sauvegarder_parquet(df, DEST_FILE)
-    pass
+    for annee in range(2018, 2025):
+        print("\n\n")
+        SOURCE_FILE = BASE_DIR / f"data/1-raw/circulations/{PARTITION}_annuel_{annee}.csv"
+        DEST_FILE = BASE_DIR / f"data/2-clean/circulations/{PARTITION}_{annee}.parquet"
+        df = lire_csv(SOURCE_FILE)
+        df = nettoyer_et_pivoter(df)
+        df = calculer_colonnes_derivees(df)
+        sauvegarder_parquet(df, DEST_FILE)
 
 if __name__ == "__main__":
     main()
