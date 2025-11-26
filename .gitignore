@@ -13,6 +13,7 @@ data/1-raw/*/slo_annuel*.csv
 data/1-raw/*/idfm_annuel*.csv
 data/1-raw/*/ter_annuel*.csv
 data/1-raw/*/tet_annuel*.csv
+data/1-raw/meteo/*.csv
 
 # Temporary excel files
 ~$*.xlsx
