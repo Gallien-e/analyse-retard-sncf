@@ -17,3 +17,6 @@ data/1-raw/meteo/*.csv
 
 # Temporary excel files
 ~$*.xlsx
+
+# Power BI report 
+powerbi/*.pbix
