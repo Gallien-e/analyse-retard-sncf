@@ -96,6 +96,8 @@ Pour plus de détail, on peut également s'intéresser à l'interaction entre le
 
 ![](./assets/retard-jour-heure.png)
 
+Par ailleurs, les analyse effectuées sur les vacances et jours fériés ne relèvent pas un impact systématique sur le taux de retard.
+
 ## Analyse spatiale
 
 La longueur du trajet semble également avoir un impact notable : les trajets de moins de 500km sont généralement plus ponctuels (20% de retard à 5 minutes) que les trajets plus de 500km (entre 25 et 30% de retard à 5 minutes). 
