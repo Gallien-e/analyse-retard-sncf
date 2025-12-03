@@ -1,3 +1,16 @@
+![License](https://img.shields.io/badge/license-GPL3-green)
+
+![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
+![Jupyter](https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white)
+![PowerBI](https://img.shields.io/badge/Power%20BI-purple?style=for-the-badge)
+
+
+[![ART Circulations trains](https://img.shields.io/badge/dataset-ART%20Circulations%20trains-ef6880)](https://www.autorite-transports.fr/observatoire-et-numerique/jeux-de-donnees-en-open-data/)
+[![SNCF Gares voyageurs](https://img.shields.io/badge/dataset-SNCF%20Gares%20voyageurs-f79840)](https://www.data.gouv.fr/datasets/gares-de-voyageurs-1/)
+[![NOAA Météo](https://img.shields.io/badge/dataset-NOAA%20Météo-ef6880)](https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-day)
+[![SNCF Régularité TGV](https://img.shields.io/badge/dataset-SNCF%20Régularité%20TGV-f79840)](https://data.sncf.com/explore/dataset/regularite-mensuelle-tgv-aqst/)
+
+
 # Mon train va-t-il être en retard ?
 
 *"De toute façon, les trains à la SNCF ne sont jamais à l'heure..."*
@@ -110,7 +123,7 @@ Comme on peut le constater sur les graphiques suivants, le taux de retard augmen
 ![](./assets/retard-rafales-vent.png)
 
 
-# Power BI
+# Rapport interactif Power BI
 
 Un rapport interactif a alors été réalisé sur Power BI, permettant de filtrer visuellement par année, compagnie ferroviaire, gare de départ et d'arrivée, région, mois, jour et heure. En voici un aperçu :
 
@@ -120,7 +133,9 @@ Un rapport interactif a alors été réalisé sur Power BI, permettant de filtre
 
 En s'appuyant notre analyse exploratoire des données, il paraît tout à fait réaliste de construire un modèle prédictif estimant la probabilité qu'un train soit à l'heure ou non. 
 
-En nous inspirant du travail réalisé par l'ART à ce sujet, sur leur simulateur [Previseo](https://previseo.autorite-transports.fr/), nous pourrions utiliser des paramètres tels que le jour de la semaine, l'heure du trajet, l'axe ferroviaire... ou encore la période de l'année, la distance totale, la région, la ligne considérée, les gares de départ et d'arrivée. Enfin, nouveauté par rapport à leur travail, nous pourrions envisager d'intégrer des données météorologiques (pluie, vent, température).
+En nous inspirant du travail réalisé par l'ART à ce sujet, sur leur simulateur [Previseo](https://previseo.autorite-transports.fr/), nous pourrions réaliser un modèle d'apprentissage par arbre de décision, utilisant des paramètres tels que le jour de la semaine, l'heure du trajet, l'axe ferroviaire, ou encore la période de l'année, la distance totale, la région, la ligne considérée, les gares de départ et d'arrivée. Enfin, nouveauté par rapport à leur travail, nous pourrions envisager d'intégrer des données météorologiques (pluie, vent, température).
+
+Les variables catégorielles (ex : jour, ligne) seront codées en variables numériques via un encodage adéquat (one-hot ou target encoding), et les données météo agrégées par région journalière.
 
 Cette partie du projet n'a pas encore été réalisée à ce jour (03/12/2025), mais le sera bientôt.
 
@@ -147,11 +162,11 @@ Si toutefois vous deviez absolument éviter les retards, voici quelques conseils
 - **taux_retard_xmin** : taux de retard à l'arrivée supérieur à x minutes.
 - **circulation** : représente un train unique, à une date précise, pour un trajet donné (une marche).
 - le **nombre de circulations** comptabilise ainsi l'ensemble des trains ayant circulé sur une période donnée.
-- **marche** : le "numéro de marche" d'un train identifie un trajet théorique (horaires, arrêts).
 - **ART** : Autorité de Régulation des Transports, organisme indépendant chargé de veiller au bon fonctionnement des transports en France.
+- **SNCF** : Société Nationale des Chemins de fer Français, principale entreprise ferroviaire en France.
 
 # Utilisation du dépôt
 
-- cloner le repo
+- cloner le dépôt
 - installer les dépendances : `conda env create -f environment.yml`
-- télécharger les données depuis https://ftp.autorite-transports.fr/circulations_ferroviaires.zip dans data/1-raw, et extraire l'ensemble des .zip
+- télécharger les données brutes non synchronisées sur Github, dont les sources sont mentionnées dans le fichier `data/1-raw/readme.md`
