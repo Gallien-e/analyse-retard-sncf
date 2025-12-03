@@ -1,8 +1,8 @@
 ![License](https://img.shields.io/badge/license-GPL3-green)
 
-![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)
-![Jupyter](https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white)
-![PowerBI](https://img.shields.io/badge/Power%20BI-purple?style=for-the-badge)
+[![Python](https://img.shields.io/badge/Python-FFD43B?style=for-the-badge&logo=python&logoColor=blue)](https://www.python.org/)
+[![Jupyter](https://img.shields.io/badge/Jupyter-F37626.svg?&style=for-the-badge&logo=Jupyter&logoColor=white)](https://jupyter.org/)
+[![PowerBI](https://img.shields.io/badge/Power%20BI-purple?style=for-the-badge)](https://www.microsoft.com/fr-fr/power-platform/products/power-bi/)
 
 
 [![ART Circulations trains](https://img.shields.io/badge/dataset-ART%20Circulations%20trains-ef6880)](https://www.autorite-transports.fr/observatoire-et-numerique/jeux-de-donnees-en-open-data/)
