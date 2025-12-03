@@ -5,3 +5,4 @@ Ce dossier contient l'ensemble des données brutes, organisées comme suit :
 - **jours_feries** : liste des jours fériés en France, 2005-2030. (source : https://www.data.gouv.fr/datasets/jours-feries-en-france/)
 - **meteo** : données météorologiques en France, 2019-2024 (source : https://www.ncei.noaa.gov/access/search/data-search/global-summary-of-the-day).
 - **region_dpts** : liste des départements par région en France
+- **regulatrite-TGV** : données de régularité fournies par la SNCF pour les TGV, 2018-2025 (source : https://data.sncf.com/explore/dataset/regularite-mensuelle-tgv-aqst/information)
