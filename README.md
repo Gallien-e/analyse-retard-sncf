@@ -48,7 +48,6 @@ Considérant la taille du jeu de données (144Go), nous allons restreindre le p�
 - uniquement le départ et l'arrive de chaque train, sans les arrêts intermédiaires
 - de 2019 à 2024
 
-
 # Structure du projet
 
 Le dépôt Github du projet est structuré de la façon suivante :
@@ -61,6 +60,19 @@ Le dépôt Github du projet est structuré de la façon suivante :
 - `models` : modèles prédictifs
 - `assets` : contient les images et graphiques utilisées dans ce readme
 - `environment.yml` : fichier de configuration de l'environnement Conda
+
+# Stack technique
+
+
+Technologie | Usage
+-------|-------
+Python 3.13         | Ingestion, nettoyage, analyse exploratoire des données
+Pandas, Numpy       | Manipulation des données tabulaires
+Matplotlib, Seaborn | Visualisation des données
+Reverse_geocoder    | Analyse géographique des données météorologiques
+Scikit-learn        | Modélisation prédictive (à venir)
+Power BI            | Rapport interactif de visualisation des données
+Anaconda            | Gestion de l'environnement Python et des dépendances
 
 # Diagramme d'architecture des données
 
