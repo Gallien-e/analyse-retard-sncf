@@ -161,7 +161,7 @@ Si toutefois vous deviez absolument éviter les retards, voici quelques conseils
 - éviter les journées de fortes pluies (>15mm), de vent violent (rafales>80km/h), de vagues de froid (<5°C), et de canicules (>35°C).
 - privilégier les trajets courts (<500km).
 - éviter certaines régions plus sujettes aux retards (ex : Provence-Alpes-Côte d'Azur, Occitanie).
-- rester chez soi (100% d'efficacité garantie 😉).
+- rester chez soi (100% d'efficacité garantie!).
 
 # Prochaines étapes du projet
 
