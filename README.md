@@ -27,11 +27,11 @@ Pour répondre à cette question, les [données de ponctualité fournies par la 
 
 2. La définition du retard utilisée par la SNCF masque une partie de la réalité : 
 
-| Durée du parcours | Seuil de retard pour être considéré à l'heure |
+| Durée du parcours | Seuil à partir duquel un train est considéré en retard |
 |-------------------|-----------------------------------------------|
-| < 1h30            | < 5 minutes                                   |
-| 1h30 - 3h         | < 10 minutes                                  |
-| > 3h              | < 15 minutes                                  |
+| < 1h30            | 5 minutes                                   |
+| 1h30 - 3h         | 10 minutes                                  |
+| > 3h              | 15 minutes                                  |
 
 Ainsi, un train ayant 9 minutes de retard sur un trajet de 1h30 ne sera pas comptabilisé.
  
@@ -161,7 +161,7 @@ Si toutefois vous deviez absolument éviter les retards, voici quelques conseils
 - éviter les journées de fortes pluies (>15mm), de vent violent (rafales>80km/h), de vagues de froid (<5°C), et de canicules (>35°C).
 - privilégier les trajets courts (<500km).
 - éviter certaines régions plus sujettes aux retards (ex : Provence-Alpes-Côte d'Azur, Occitanie).
-- rester chez soi (100% d'efficacité garantie).
+- rester chez soi (100% d'efficacité garantie 😉).
 
 # Prochaines étapes du projet
 
